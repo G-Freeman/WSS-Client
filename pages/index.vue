@@ -7,7 +7,8 @@
 			</div>
 		</div>
 		<div class="test">
-			<client v-for="client in clients"
+			<client v-for="(client,index) in clients"
+				:key	= "client.url+index"
 				:header	= "client.header"
 				:url	= "client.url"
 			/>
@@ -17,7 +18,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import WSS from "~/classes/network/wss";
 import client from "~/components/client.vue";
 
 export default Vue.extend({
@@ -28,7 +28,7 @@ export default Vue.extend({
 	data: () => {
 		return {
 			url: 'ws:localhost:9000',
-			clients: [] as any
+			clients: [1] as any
 		}
 	},
 	computed: {

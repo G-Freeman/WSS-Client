@@ -68,7 +68,6 @@ export default {
 		background: #3c3f41;
 		position: relative;
 		align-self: center;
-		font-family: sans-serif;
 		line-height: 1;
 		display: flex;
 		align-items: center;

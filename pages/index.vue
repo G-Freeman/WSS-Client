@@ -7,43 +7,42 @@
 			</div>
 		</div>
 		<div class="test">
-			<client v-for="(client,index) in clients"
-				:key	= "client.url+index"
-				:header	= "client.header"
-				:url	= "client.url"
-			/>
+			<client_card v-for="id in sockets" :socket="WSS.sockets[id]"/>
 		</div>
 	</section>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
-import client from "~/components/client.vue";
+import WSS from "~/classes/network/wss";
+import APP from "~/classes/app";
+
+const client_card = () => import("~/components/client.vue");
 
 export default Vue.extend({
 	name: 'IndexPage',
 	components: {
-		client
+		client_card
 	},
 	data: () => {
 		return {
 			url: 'ws:localhost:9000',
-			clients: [1] as any
 		}
 	},
 	computed: {
-		testStore() { return this.$store.getters.test },
+		WSS: () => WSS,
+		sockets() { return this.$store.getters["network/wss/sockets"] },
 	},
 	methods: {
-		addClient(url:string) {
-			this.clients.push({
-				header:url,
-				url:url,
-			});
+		init() {
+			APP.store = this.$store;
+		},
+		addClient(url) {
+			new WSS(url,'name');
 		}
 	},
 	mounted() {
-
+		this.init();
 	}
 })
 </script>
@@ -91,7 +90,6 @@ export default Vue.extend({
 		grid-template-columns: repeat(auto-fit,minmax(255px,1fr));
 		grid-gap: 8px;
 		padding: 8px;
-		background: coral;
 		justify-items: center;
 	}
 }
